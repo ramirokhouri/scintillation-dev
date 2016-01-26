@@ -1,0 +1,56 @@
+qué hay
+-seleccionar un .sum
+-seleccionar franja horaria
+-seleccionar satélite
+-gráfico para 1 satélite
+
+qué falta
+-gráficos
+--hacer que las 2 rectas comiencen en el mismo punto
+--areglar escala (la por defecto no muestra bien las cosas)
+-leyendas en gráficos
+--referencia de color de satélite
+--títulos
+-formatear la tabla para que quede ordenada
+--cambiar los índices de las horas para que quede como en el ejemplo
+---dividir los minutos en 60 y concatenarlos a la hora
+-pasar todo a excel
+-hacer la GUI
+-pasar el código a OO
+
+
+--- desarrollo contador s4
+
+
+---por mes
+sumando todas las horas de cada noche
+suma de 2200 - 2259 del día 1,2,3,4,5... del mes
+suma de 2300 - 2359 del día 1,2,3,4,5... del mes
+
+título de la sumatoria mensual
+
+---por hora - para gráfico por noche---
+2131 - 2159
+2200 - 2259
+2300 - 2359
+...
+
+
+UT Local
+21 17
+22 18
+23 19
+24 20
+25 21
+26 22
+
+--- ---
+
+
+evento 1: s4 > 0,1
+evento 2: s4 > 0,5
+
+contador > 0,1
+contador > 0,5
+
+http://xlsxwriter.readthedocs.org/working_with_pandas.html

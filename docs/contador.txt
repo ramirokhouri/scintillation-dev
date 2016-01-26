@@ -1,0 +1,12 @@
+--recuperar el primer y último nombre de los sums para los labels, nombres, etc
+
+-labels a los gráficos (buscar paper)
+-gráfico de todos los sums seleccionados
+
+
+-armar un instalador?
+
+excel
+-pegar los gráficos en esas hojas de excel | gráficos desde la hoja
+
+controlar dónde se crean y guardan las imágenes - docs excel
