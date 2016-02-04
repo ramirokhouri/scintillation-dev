@@ -1,10 +1,6 @@
 import pandas as pd
-
-class SUMProcessor(object):
-	"""docstring for SUMProcessor"""
-	def __init__(self, sums):
-		super(SUMProcessor, self).__init__()
-		self.sums = sums
+import os
+import string
 
 class SUM(object):
 	"""docstring for SUM"""
@@ -15,6 +11,7 @@ class SUM(object):
 		self.parse_hours()
 		self.parse_sats()
 		self.get_merge_list()
+		self.name = os.path.basename(path).lower().split('a')[0]
 
 	def load_file(self):
 		with open(self.path, "r") as f:
@@ -84,6 +81,7 @@ class SUM(object):
 		return merge_list
 
 	def sum_to_dataframe(self):
+		"""sum to dataframe"""
 		merge_list = self.get_merge_list()
 		df = pd.DataFrame(merge_list)
 
@@ -103,8 +101,3 @@ class SUM(object):
 		df = df.set_index('hour')
 
 		return df
-
-
-sum = SUM('/home/kuori/Documents/CIASuR dev/sums/120901A0.SUM')
-df = sum.sum_to_dataframe()
-print df.info()
