@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from core import SUM
 from PyQt4 import QtGui, QtCore
 
-writer = pd.ExcelWriter('S4count_excel_test.xlsx')
+writer = pd.ExcelWriter('S4count_excel_test_200416.xlsx')
 workbook  = writer.book
 
 class SUMProcessor(object):
@@ -13,16 +14,27 @@ class SUMProcessor(object):
 		super(SUMProcessor, self).__init__()
 		self.sums_paths = sums_paths
 
-		df_list = []
 		for sum_path in sums_paths:
 			sum_ = SUM(sum_path)
 			df = sum_.sum_to_dataframe()
 			result = self.event_count(df)
-			self.excel(sum_, result)
-			df_list.append(result)
+			if sum_path == sums_paths[0]:
+				result_all = result
+				first_sum_name = sum_.name
+			else: 
+				result_all += result
 
-		df_result = pd.merge(df_list, how='inner')
-		self.excel(sum_, df_result)
+			if sum_path == sums_paths[-1]:
+				last_sum_name = sum_.name		
+
+			title = sum_.name[-2:] + '-' + sum_.name[2:4] + '-' + sum_.name[0:2]
+			self.excel(title, result)
+		
+		first_sum_name =  first_sum_name[-2:] + '-' + first_sum_name[2:4] + '-' + first_sum_name[0:2]
+		last_sum_name =  last_sum_name[-2:] + '-' + last_sum_name[2:4] + '-' + last_sum_name[0:2]
+
+		title = first_sum_name + ' to ' + last_sum_name
+		self.excel(title, result_all)
 		writer.save()
 
 	
@@ -48,25 +60,25 @@ class SUMProcessor(object):
 
 		return result
 
-	def excel(self, sum_, result):
-		result.to_excel(writer, sheet_name = sum_.name)
-		worksheet = writer.sheets[sum_.name]
+	def excel(self, name, result):
+		result.to_excel(writer, sheet_name = name)
+		worksheet = writer.sheets[name]
 		# Create a chart object.
 		chart = workbook.add_chart({'type': 'column'})
 		# Configure the series of the chart from the dataframe data.
 		chart.add_series({
 			'name': '=' + 'Evento 1',
-			'categories': '=' + sum_.name + '!$A$2:$A$15',
-			'values': '=' + sum_.name + '!$B$2:$B$15'
+			'categories': '=' + name + '!$A$2:$A$15',
+			'values': '=' + name + '!$B$2:$B$15'
 			})
 		chart.add_series({
 			'name': '=' + 'Evento 2',
-			'categories': '=' + sum_.name + '!$A$2:$A$15',
-			'values': '=' + sum_.name + '!$C$2:$C$15'
+			'categories': '=' + name + '!$A$2:$A$15',
+			'values': '=' + name + '!$C$2:$C$15'
 			})
 
 		chart.set_title({
-		    'name': sum_.name,
+		    'name': name,
 		    'name_font': {
 		        'name': 'Calibri',
 		        'color': 'black',
@@ -77,17 +89,9 @@ class SUMProcessor(object):
 
 		# Chart labels
 		chart.set_x_axis({'name': 'Horas'})
-		chart.set_y_axis({'name': 'Cantidad'})
+		chart.set_y_axis({
+			'name': 'Cantidad',
+			'min': 0, 'max': 5000
+			})
 		# Insert the chart into the worksheet.
 		worksheet.insert_chart('E2', chart)
-
-
-path_list = ['/home/kuori/Documents/CIASuR dev/sums/120901A0.SUM',
-'/home/kuori/Documents/CIASuR dev/sums/120902A0.SUM',
-'/home/kuori/Documents/CIASuR dev/sums/120903A0.SUM',
-'/home/kuori/Documents/CIASuR dev/sums/120904A0.SUM',
-'/home/kuori/Documents/CIASuR dev/sums/120905A1.SUM',
-'/home/kuori/Documents/CIASuR dev/sums/120906A0.SUM',
-'/home/kuori/Documents/CIASuR dev/sums/120907A0.SUM']
-
-sum_processor = SUMProcessor(path_list)

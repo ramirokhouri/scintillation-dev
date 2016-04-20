@@ -1,18 +1,14 @@
+# -*- coding: utf-8 -*-
 import pandas as pd
 import os
 import string
 
 class SUM(object):
-	"""docstring for SUM"""
-	def __init__(self, path):
-		super(SUM, self).__init__()
-		self.path = path
-		self.load_file() 							# metodos con _ y minuscula
-		self.parse_hours()
-		self.parse_sats()
-		self.get_merge_list()
-		self.name = os.path.basename(path).lower().split('a')[0]
-
+	"""
+	SUM TO DATAFRAME
+	sum_ = SUM(sum_path)
+	df = sum_.sum_to_dataframe()
+	"""
 	def load_file(self):
 		with open(self.path, "r") as f:
 			self.list_of_file = list(f)
@@ -20,10 +16,10 @@ class SUM(object):
 	def parse_hours(self):
 		"""hour_row_list"""
 		list_of_file = self.list_of_file
-		HOUR_FIRST_INDEX = 5						# CONSTANTES CON MAYUSCULA
+		HOUR_FIRST_INDEX = 5						# CONSTANTES CON MAYÚSCULA
 		hour_row_list = [list_of_file[HOUR_FIRST_INDEX].split()]
 
-		#indice del proximo elemento para hour_row_list
+		#índice del próximo elemento para hour_row_list
 		hour_next_index = HOUR_FIRST_INDEX + 1 + int(hour_row_list[-1][1])
 
 		while len(list_of_file) > hour_next_index:
@@ -97,7 +93,17 @@ class SUM(object):
 		del df[14]
 		del df[15]
 
-		df.columns=['year','month','day','hour','sat','s4']
+		df.columns = ['year','month','day','hour','sat','s4']
 		df = df.set_index('hour')
 
 		return df
+
+	#cuando se instancia el objeto, lo primero que se ejecuta es el __init__
+	def __init__(self, path):
+		super(SUM, self).__init__()
+		self.path = path
+		self.name = os.path.basename(path).lower().split('a')[0]		
+		self.load_file() 							# metodos con _ y minuscula
+		self.parse_hours()
+		self.parse_sats()
+		self.get_merge_list()		
