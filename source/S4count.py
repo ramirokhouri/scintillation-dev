@@ -28,13 +28,13 @@ class SUMProcessor(object):
 				last_sum_name = sum_.name		
 
 			title = sum_.name[-2:] + '-' + sum_.name[2:4] + '-' + sum_.name[0:2]
-			self.excel(title, result)
+			self.excel(title, result, 500)
 		
 		first_sum_name =  first_sum_name[-2:] + '-' + first_sum_name[2:4] + '-' + first_sum_name[0:2]
 		last_sum_name =  last_sum_name[-2:] + '-' + last_sum_name[2:4] + '-' + last_sum_name[0:2]
 
 		title = first_sum_name + ' to ' + last_sum_name
-		self.excel(title, result_all)
+		self.excel(title, result_all, 5000)
 		writer.save()
 
 	
@@ -60,7 +60,7 @@ class SUMProcessor(object):
 
 		return result
 
-	def excel(self, name, result):
+	def excel(self, name, result, max_axis):
 		result.to_excel(writer, sheet_name = name)
 		worksheet = writer.sheets[name]
 		# Create a chart object.
@@ -91,7 +91,7 @@ class SUMProcessor(object):
 		chart.set_x_axis({'name': 'Horas'})
 		chart.set_y_axis({
 			'name': 'Cantidad',
-			'min': 0, 'max': 5000
+			'min': 0, 'max': max_axis
 			})
 		# Insert the chart into the worksheet.
 		worksheet.insert_chart('E2', chart)
